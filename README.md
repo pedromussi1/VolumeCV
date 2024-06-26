@@ -43,7 +43,7 @@
 <h3>Manipulating Landmarks</h3>
 
 <p align="center">
-  <kbd><img src="https://i.imgur.com/vz5C8Se.png" alt="VolumeSetting"></kbd>
+  <kbd><img src="https://i.imgur.com/aV0Zl5I.png" alt="ManipulatingLandmarks"></kbd>
 </p>
 
 <p>By finding the position of each point of the hand, the program knows how to differentiate between thumb, index, middle, ring, and pinky fingers. Using this information we can create a consistent functionality for the program. Since there are multiple points in each finger, x and y axis of a finger can also be determined, thus enabling us to know if a finger is "up" or "down".</p>
