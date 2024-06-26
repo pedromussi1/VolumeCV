@@ -1,22 +1,32 @@
 <h1>Code Breakdown</h1>
 
-<p>This page should cover all the steps that were taken to create the MyMovieList web application. Code snippets will be shown and explained, along with screenshots of how the database on PostgreSQL was used with different tables, analyzing how the database connects to the website in the localhost, and how users have their own lists with help of JWT.</p>
+<p>This report covers the functionality and implementation of a hand gesture-based volume control program. The program leverages computer vision and hand tracking technology to allow users to control the volume of a Windows computer using hand gestures. The main components of the program include a hand tracking module and a volume control script.</p>
 
-<h2>Database</h2>
+<h2>HandTrackingModule</h2>
 
 <p>
-The website uses one database with three tables. The tables are called 'users', 'available_movies' and 'movies'. 
+This module is responsible for detecting and tracking hand landmarks using MediaPipe and OpenCV.
 </p>
 
-<p align="center">
-  <kbd><img src="https://i.imgur.com/im6rlKP.png" alt="AddingItem" width="800px"></kbd>
-</p>
 
-<p>The role of the 'users' table is to store the account of users of the website, saving their unique passwords while encrypting them inside the database, along with their user_id. The information that is stored unchanged are 'user_name' and 'user_email', which are used for logging in and registering. This step is essential for the functionality of the website as each user must have their own movie list, and may only access their own MyMovieList account.</p>
+<p>The handDetector class initializes the MediaPipe hand tracking model with parameters such as mode, maximum hands, detection confidence, and tracking confidence.</p>
 
-<p align="center">
-  <kbd><img src="https://i.imgur.com/j0UWyIB.png" alt="AddingItem" width="400px"></kbd>
-</p>
+```py
+
+class handDetector():
+    def __init__(self, mode=False, maxHands=2, detectionCon=0.5, trackCon=0.5):
+        self.mode = mode
+        self.maxHands = maxHands
+        self.detectionCon = detectionCon
+        self.trackCon = trackCon
+
+        self.mpHands = mp.solutions.hands
+        self.hands = self.mpHands.Hands(static_image_mode=self.mode,
+                                        max_num_hands=self.maxHands,
+                                        min_detection_confidence=self.detectionCon,
+                                        min_tracking_confidence=self.trackCon)
+        self.mpDraw = mp.solutions.drawing_utils
+```
 
 <p>The role of the 'available_movies' table is to have all the possible movies the user can add to their movie list. I had the idea to find movie title datasets in Kaggle and populate the available_movies table with all those titles because I needed a way to impede users from adding just anything to the list. The only thing users should be allowed to add to their lists are existing movies. I knew I could not populate the whole table manually seeing that the dataset had more than 24,000 entries, so I used the command "COPY available_movies (title) FROM '/path/to/movies.csv' DELIMITER ',' CSV;" to copy all the tuples from the dataset to available_movies.
 </p>
