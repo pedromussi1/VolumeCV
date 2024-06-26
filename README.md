@@ -32,13 +32,13 @@
 
 <p>Download files, install OpenCV and mediapipe into Python Interpreter. Run main.py file.</p>
 
-<h3>Login Page</h3>
+<h3>Hand Tracking</h3>
 
 <p align="center">
   <kbd><img src="https://i.imgur.com/9p4H4wO.png?1" alt="Login"></kbd>
 </p>
 
-<p>The login page works the same way as the one that was used for 'JWT with PERN'. The user can write their email and password credentials in order to log into the website. The user will only be able to log into an account that has already been registered on the website.</p>
+<p>The first step is to detect hands in the image and draw landmarks of that hands so that data can be compared and manipulated. By finding the position of each point of the hand, the program knows how to differentiate between thumb, index, middle, ring, and pinky fingers. Using this information we can create a consistent functionality for the program. Since there are multiple points in each finger, x and y axis of a finger can also be determined, thus enabling us to know if a finger is "up" or "down". In our case, here is the logic I have implemented: the distance of the thumb and index finger of a hand will be calculated. The farther they are from each other, the higher the volume will be set. In order for the computer volume to be changed to said volume, the hand's pinky must be "down".</p>
 
 <h3>Registering new User on the Website</h3>
 
