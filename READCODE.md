@@ -28,15 +28,46 @@ class handDetector():
         self.mpDraw = mp.solutions.drawing_utils
 ```
 
-<p>The role of the 'available_movies' table is to have all the possible movies the user can add to their movie list. I had the idea to find movie title datasets in Kaggle and populate the available_movies table with all those titles because I needed a way to impede users from adding just anything to the list. The only thing users should be allowed to add to their lists are existing movies. I knew I could not populate the whole table manually seeing that the dataset had more than 24,000 entries, so I used the command "COPY available_movies (title) FROM '/path/to/movies.csv' DELIMITER ',' CSV;" to copy all the tuples from the dataset to available_movies.
+<p>The findHands method processes an image to detect hands and optionally draws landmarks on the image.
 </p>
 
-<p align="center">
-  <kbd><img src="https://i.imgur.com/c76cdwa.png" alt="AddingItem" width="600px"></kbd>
-</p>
+```py
+def findHands(self, img, draw=True):
+    imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    self.results = self.hands.process(imgRGB)
+    if self.results.multi_hand_landmarks:
+        for handLms in self.results.multi_hand_landmarks:
+            if draw:
+                self.mpDraw.draw_landmarks(img, handLms, self.mpHands.HAND_CONNECTIONS)
+    return img
+```
 
-<p>The last table I had to create and the most crucial to the idea of the website was the 'movies' table. This table stores the movie title selected from the 'available_movies' table, the rating the user gave to said movie, and the user_id of the user that selection belong to. This is the table that connects 'users' and 'available_movies', making everything possible.
-</p>
+<p>The findPosition method finds and returns the positions of the landmarks of the detected hand.</p>
+
+```py
+def findPosition(self, img, handNo=0, draw=True):
+    xList = []
+    yList = []
+    bbox = []
+    self.lmList = []
+    if self.results.multi_hand_landmarks:
+        myHand = self.results.multi_hand_landmarks[handNo]
+        for id, lm in enumerate(myHand.landmark):
+            h, w, c = img.shape
+            cx, cy = int(lm.x * w), int(lm.y * h)
+            xList.append(cx)
+            yList.append(cy)
+            self.lmList.append([id, cx, cy])
+            if draw:
+                cv2.circle(img, (cx, cy), 5, (255, 0, 255), cv2.FILLED)
+        xmin, xmax = min(xList), max(xList)
+        ymin, ymax = min(yList), max(yList)
+        bbox = xmin, ymin, xmax, ymax
+        if draw:
+            cv2.rectangle(img, (bbox[0] - 20, bbox[1] - 20), (bbox[2] + 20, bbox[3] + 20), (0, 255, 0), 2)
+    return self.lmList, bbox
+```
+
 
 
 <h2>Server</h2>
