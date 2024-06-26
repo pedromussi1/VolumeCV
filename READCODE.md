@@ -9,9 +9,15 @@ This module is responsible for detecting and tracking hand landmarks using Media
 </p>
 
 
-<p>The handDetector class initializes the MediaPipe hand tracking model with parameters such as mode, maximum hands, detection confidence, and tracking confidence.</p>
+<p>The handDetector class initializes the MediaPipe hand tracking model with specified parameters: mode, maxHands, detectionCon, and trackCon.</p>
+
+<p>MediaPipe's hands module is configured for hand detection and tracking, and its drawing utilities are set up for visualizing the hand landmarks.</p>
 
 ```py
+import cv2
+import mediapipe as mp
+import time
+import math
 
 class handDetector():
     def __init__(self, mode=False, maxHands=2, detectionCon=0.5, trackCon=0.5):
@@ -26,9 +32,16 @@ class handDetector():
                                         min_detection_confidence=self.detectionCon,
                                         min_tracking_confidence=self.trackCon)
         self.mpDraw = mp.solutions.drawing_utils
+
 ```
 
 <p>The findHands method processes an image to detect hands and optionally draws landmarks on the image.
+</p>
+
+<p>The image is converted to RGB format, and the hand detection model processes it to find hand landmarks.
+</p>
+
+<p>If landmarks are detected, they are drawn on the image.
 </p>
 
 ```py
@@ -42,7 +55,10 @@ def findHands(self, img, draw=True):
     return img
 ```
 
-<p>The findPosition method finds and returns the positions of the landmarks of the detected hand.</p>
+<p>The findPosition method identifies and returns the positions of the landmarks of the detected hand.</p>
+
+<p>It calculates the pixel coordinates of each landmark and optionally draws them on the image.
+</p>
 
 ```py
 def findPosition(self, img, handNo=0, draw=True):
@@ -68,7 +84,10 @@ def findPosition(self, img, handNo=0, draw=True):
     return self.lmList, bbox
 ```
 
-<p>The findDistance method calculates the distance between two specified landmarks.
+<p>The findDistance method calculates the Euclidean distance between two specified landmarks.
+</p>
+
+<p>It also draws lines and circles between the landmarks to visually indicate the measurement.
 </p>
 
 ```py
@@ -85,7 +104,10 @@ def findDistance(self, p1, p2, img, draw=True):
     return length, img, [x1, y1, x2, y2, cx, cy]
 ```
 
-<p>The fingersUp method checks which fingers are up.
+<p>The fingersUp method determines which fingers are up by analyzing the positions of the landmarks.
+</p>
+
+<p>It compares the positions of the fingertip landmarks with those of their corresponding lower joints.
 </p>
 
 ```py
@@ -106,42 +128,71 @@ def fingersUp(self):
 
 <h2>VolumeHandControlAdvanced</h2>
 
-<p>This script uses the HandTrackingModule to control the system volume based on hand gestures.
+<p>The script sets up webcam capture and initializes the hand detector.
+</p>
+
+<p>It configures the audio system using the pycaw library to adjust the system volume.
 </p>
 
 <p>The script initializes the webcam capture and the hand detector.
 </p>
 
 ```py
+import cv2
+import numpy as np
+import time
+import ctypes
+import comtypes
+from ctypes import cast, POINTER
+from comtypes import CLSCTX_ALL
+from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+
+import HandTrackingModule as htm
+
 cap = cv2.VideoCapture(0)
-detector = handDetector(detectionCon=0.7, maxHands=1)
+detector = htm.handDetector(detectionCon=0.7, maxHands=1)
+
 devices = AudioUtilities.GetSpeakers()
 interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
 volume = cast(interface, POINTER(IAudioEndpointVolume))
+volRange = volume.GetVolumeRange()
+minVol = volRange[0]
+maxVol = volRange[1]
+vol = 0
+volBar = 400
+volPer = 0
 ```
 
-<p>The main loop: 
-Reads frames from the webcam.
-Detects hands and their positions.
-Filters based on hand size.
-Measures the distance between the thumb and index finger.
-Converts this distance to a volume level.
-Sets the system volume based on the finger position and distance.
-Displays visual feedback on the screen.</p>
+<p>The main loop reads frames from the webcam and processes them using the hand detector.
+</p>
+
+<p>It identifies hand landmarks, calculates the area of the detected hand, and filters frames based on the hand size.
+</p>
+
+<p>The script measures the distance between the thumb and index finger, maps this distance to a volume level, and adjusts the system volume accordingly.
+</p>
+
+<p>Visual feedback is provided by drawing on the webcam feed.
+</p>
 
 ```py
+pTime = 0
 while True:
     success, img = cap.read()
     img = detector.findHands(img)
     lmList, bbox = detector.findPosition(img, draw=True)
+    
     if len(lmList) != 0:
         area = (bbox[2] - bbox[0]) * (bbox[3] - bbox[1]) // 100
+        
         if 250 < area < 1000:
             length, img, lineInfo = detector.findDistance(4, 8, img)
             volBar = np.interp(length, [50, 200], [400, 150])
             volPer = np.interp(length, [50, 200], [0, 100])
+            
             smoothness = 10
             volPer = smoothness * round(volPer / smoothness)
+            
             fingers = detector.fingersUp()
             if not fingers[4]:
                 volume.SetMasterVolumeLevelScalar(volPer / 100, None)
@@ -149,15 +200,22 @@ while True:
                 colorVol = (0, 255, 0)
             else:
                 colorVol = (255, 0, 0)
+    
     cv2.rectangle(img, (50, 150), (85, 400), (255, 0, 0), 3)
     cv2.rectangle(img, (50, int(volBar)), (85, 400), (255, 0, 0), cv2.FILLED)
-    cv2.putText(img, f' {int(volPer)} %', (40, 450), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 3)
+    cv2.putText(img, f'{int(volPer)} %', (40, 450), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 3)
+    
     cVol = int(volume.GetMasterVolumeLevelScalar() * 100)
     cv2.putText(img, f'Vol Set: {int(cVol)}', (400, 50), cv2.FONT_HERSHEY_COMPLEX, 1, colorVol, 3)
+    
     cTime = time.time()
     fps = 1 / (cTime - pTime)
     pTime = cTime
     cv2.putText(img, f'FPS: {int(fps)}', (40, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 0, 0), 3)
+    
     cv2.imshow("Img", img)
     cv2.waitKey(1)
+
 ```
+
+
