@@ -38,7 +38,7 @@
   <kbd><img src="https://ai.google.dev/static/edge/mediapipe/images/solutions/hand-landmarks.png" alt="HandTracking"></kbd>
 </p>
 
-<p>The first step is to detect hands in the image and draw landmarks of that hands so that data can be compared and manipulated. THis is possible with the help of a technology developed by Google called MediaPipe Hand Landmarker. NOt only does this technology perfectly detects hands, it also adds unique points to each joint and enumerates them.  </p>
+<p>The first step is to detect hands in the image and draw landmarks of that hands so that data can be compared and manipulated. This is possible with the help of a technology developed by Google called MediaPipe Hand Landmarker. Not only does this technology perfectly detects hands, it also adds unique points to each joint and enumerates them.  </p>
 
 <h3>Manipulating Landmarks</h3>
 
@@ -56,29 +56,3 @@
 
 <p>In our case, here is the logic I have implemented: the distance of the thumb and index finger of a hand will be calculated. The farther they are from each other, the higher the volume will be set. In order for the computer volume to be changed to said volume, the hand's pinky must be "down".</p>
 
-<h3>Adding movie title</h3>
-
-<p align="center">
-  <kbd><img src="https://i.imgur.com/0n9B35x.png" alt="AddingMovie"></kbd>
-</p>
-
-<p>After logging in the user will see this page, where they can add movie titles to their list and give a rating to each one.</p>
-
-<p align="center">
-  <kbd><img src="https://i.imgur.com/NpJRsFX.gif" alt="DeletingItem" width="1000"></kbd>
-</p>
-
-<p>By typing the title of a movie in the input field, a drop-down list of movies will be shown. The user can select of the the shown titles, type a rating, and add the movie to the list. If a movie is not selected from the drop-down, the user cannot add it to the list.</p>
-<p>The 'Edit' button provides a chance for the user to changetheir rating for a movie they have previously added to the list. After pressing 'Save' the rating will be updated. THe user can also press 'Delete' if they want to remove an item from the list.</p>
-
-<h3>Different Users</h3>
-
-<p align="center">
-  <kbd><img src="https://i.imgur.com/7lvQk5H.png" alt="AddingMovie"></kbd>
-</p>
-
-<p>In case you decide to have two different accounts, you will notice that they do not share the same list. Each user has their own list and all the rules of the list such as no two entries can have the same name are applicable for each user account.</p>
-
-<p align="center">
-  <kbd><img src="https://i.imgur.com/emqUmc0.png" alt="AddingMovie"></kbd>
-</p>
