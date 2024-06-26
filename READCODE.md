@@ -120,7 +120,8 @@ interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
 volume = cast(interface, POINTER(IAudioEndpointVolume))
 ```
 
-<p>The main loop: Reads frames from the webcam.
+<p>The main loop: 
+Reads frames from the webcam.
 Detects hands and their positions.
 Filters based on hand size.
 Measures the distance between the thumb and index finger.
