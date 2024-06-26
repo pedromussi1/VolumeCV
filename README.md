@@ -35,10 +35,18 @@
 <h3>Hand Tracking</h3>
 
 <p align="center">
-  <kbd><img src="https://i.imgur.com/aV0Zl5I.png" alt="HandTracking"></kbd>
+  <kbd><img src="https://ai.google.dev/static/edge/mediapipe/images/solutions/hand-landmarks.png" alt="HandTracking"></kbd>
 </p>
 
-<p>The first step is to detect hands in the image and draw landmarks of that hands so that data can be compared and manipulated. By finding the position of each point of the hand, the program knows how to differentiate between thumb, index, middle, ring, and pinky fingers. Using this information we can create a consistent functionality for the program. Since there are multiple points in each finger, x and y axis of a finger can also be determined, thus enabling us to know if a finger is "up" or "down". </p>
+<p>The first step is to detect hands in the image and draw landmarks of that hands so that data can be compared and manipulated. THis is possible with the help of a technology developed by Google called MediaPipe Hand Landmarker. NOt only does this technology perfectly detects hands, it also adds unique points to each joint and enumerates them.  </p>
+
+<h3>Manipulating Landmarks</h3>
+
+<p align="center">
+  <kbd><img src="https://i.imgur.com/vz5C8Se.png" alt="VolumeSetting"></kbd>
+</p>
+
+<p>By finding the position of each point of the hand, the program knows how to differentiate between thumb, index, middle, ring, and pinky fingers. Using this information we can create a consistent functionality for the program. Since there are multiple points in each finger, x and y axis of a finger can also be determined, thus enabling us to know if a finger is "up" or "down".</p>
 
 <h3>Volume Setting</h3>
 
