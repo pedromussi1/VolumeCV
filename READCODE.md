@@ -218,5 +218,81 @@ while True:
 
 ```
 
+<h2>Hand Tracking Module (HandTrackingModule.py):</h2>
 
+<h3>Initialization (__init__ method):</h3>
+
+<p>This method sets up the MediaPipe hands solution with specified parameters such as mode, maxHands, detectionCon, and trackCon.
+</p>
+
+<p>The self.mpHands initializes the MediaPipe hands solution.
+</p>
+
+<p>The self.hands object is configured with the provided parameters to detect and track hand landmarks.
+</p>
+
+<p>self.mpDraw is set up to draw the detected hand landmarks.
+</p>
+
+<h3>Hand Detection (findHands method):</h3>
+
+<p>The input image is converted from BGR to RGB format.
+</p>
+
+<p>The self.hands.process method processes the RGB image to detect hand landmarks.
+</p>
+
+<p>If hand landmarks are detected, they are drawn on the image using self.mpDraw.
+</p>
+
+<h3>Position Detection (findPosition method):</h3>
+
+<p>This method iterates over the detected landmarks and calculates their pixel coordinates.
+</p>
+
+<p>It appends the coordinates to self.lmList and optionally draws them on the image.
+</p>
+
+<p>The bounding box (bbox) around the hand is calculated based on the minimum and maximum coordinates of the landmarks.
+</p>
+
+<h3>Distance Calculation (findDistance method):</h3>
+
+<p>This method calculates the Euclidean distance between two specified landmarks.
+</p>
+
+<p>It draws lines and circles between the landmarks to visually indicate the distance.
+</p>
+
+<h3>Finger Status (fingersUp method):</h3>
+
+<p>This method determines the status of the fingers (up or down) by comparing the positions of the fingertip landmarks with their corresponding lower joints.
+</p>
+
+<p>It returns a list indicating the status of each finger.
+</p>
+
+<h2>Volume Control Script (VolumeHandControlAdvanced.py):</h2>
+
+<h3>Initialization:</h3>
+
+<p>The script captures video from the webcam and initializes the hand detector.</p>
+
+<p>The pycaw library is used to control the system volume. It retrieves the audio endpoint and sets up the volume control interface.</p>
+
+<p>The volume range (minVol and maxVol) is obtained from the audio endpoint.</p>
+
+<h3>Main Loop:</h3>
+
+<p>The script continuously captures frames from the webcam and processes them using the findHands and findPosition methods of the handDetector class.</p>
+
+<p>If hand landmarks are detected, the area of the bounding box around the hand is calculated.</p>
+
+<p>The script filters frames based on the hand size to ensure reliable detection.</p>
+
+<p>The distance between the thumb and index finger is measured using the findDistance method, and this distance is mapped to a volume level.</p>
+
+<p>If the pinky finger is not up, the system volume is adjusted based on the mapped volume level.</p>
+
+<p>The volume level is displayed on the webcam feed, and visual feedback is provided to the user.</p>
 
