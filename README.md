@@ -35,18 +35,18 @@
 <h3>Hand Tracking</h3>
 
 <p align="center">
-  <kbd><img src="https://i.imgur.com/9p4H4wO.png?1" alt="Login"></kbd>
+  <kbd><img src="https://i.imgur.com/aV0Zl5I.png" alt="HandTracking"></kbd>
 </p>
 
-<p>The first step is to detect hands in the image and draw landmarks of that hands so that data can be compared and manipulated. By finding the position of each point of the hand, the program knows how to differentiate between thumb, index, middle, ring, and pinky fingers. Using this information we can create a consistent functionality for the program. Since there are multiple points in each finger, x and y axis of a finger can also be determined, thus enabling us to know if a finger is "up" or "down". In our case, here is the logic I have implemented: the distance of the thumb and index finger of a hand will be calculated. The farther they are from each other, the higher the volume will be set. In order for the computer volume to be changed to said volume, the hand's pinky must be "down".</p>
+<p>The first step is to detect hands in the image and draw landmarks of that hands so that data can be compared and manipulated. By finding the position of each point of the hand, the program knows how to differentiate between thumb, index, middle, ring, and pinky fingers. Using this information we can create a consistent functionality for the program. Since there are multiple points in each finger, x and y axis of a finger can also be determined, thus enabling us to know if a finger is "up" or "down". </p>
 
-<h3>Registering new User on the Website</h3>
+<h3>Volume Setting</h3>
 
 <p align="center">
-  <kbd><img src="https://i.imgur.com/RhRDuUr.png?1" alt="DeletingItem"></kbd>
+  <kbd><img src="https://i.imgur.com/vz5C8Se.png" alt="VolumeSetting"></kbd>
 </p>
 
-<p>The user here can register a new account on the website by providing email, password and username credentials. After registering, the user will access their dashboard that displays their username.</p>
+<p>In our case, here is the logic I have implemented: the distance of the thumb and index finger of a hand will be calculated. The farther they are from each other, the higher the volume will be set. In order for the computer volume to be changed to said volume, the hand's pinky must be "down".</p>
 
 <h3>Adding movie title</h3>
 
