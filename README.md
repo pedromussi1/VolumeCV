@@ -30,7 +30,7 @@
 
 <h2>Project Walk-through</h2>
 
-<p>Download files, install OpenCV and mediapipe into Python Interpreter. Run main.py file.</p>
+<p>Download files, install OpenCV and mediapipe into Python Interpreter. Run VolumeHandControlAdvanced.py file.</p>
 
 <h3>Hand Tracking</h3>
 
